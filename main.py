@@ -56,12 +56,18 @@ class LUMI(QWidget):
         self.update_filter()
 
     def save_initial_gamma(self):
-        result = subprocess.run(f"xrandr --verbose | grep -A 5 '{self.display_name}'", shell=True, capture_output=True, text=True)
+        result = subprocess.run(
+            f"xrandr --verbose | grep -A 5 '{self.display_name}'",
+             shell=True,
+             capture_output=True,
+             text=True
+            )
         match = re.search(r"Gamma:\s+([\d.]+):([\d.]+):([\d.]+)", result.stdout)
         if match:
             red_gamma, green_gamma, blue_gamma = match.groups()
             with open(self.config_file, "w") as file:
-                file.write(f"initial_gamma={red_gamma},{green_gamma},{blue_gamma}\n")
+                file.write(
+                    f"initial_gamma={red_gamma},{green_gamma},{blue_gamma}\n")
                 file.write("slider_value=50\n")
                 file.write("filter_type=neutral\n")
             print("Initial gamma:", red_gamma, green_gamma, blue_gamma)
@@ -72,7 +78,10 @@ class LUMI(QWidget):
         try:
             with open(self.config_file, "r") as file:
                 lines = file.readlines()
-                initial_gamma = [line.split('=')[1].strip() for line in lines if "initial_gamma" in line][0]
+                initial_gamma = [
+                    line.split('=')[1].strip() 
+                    for line in lines if "initial_gamma" in line][0]
+                    
                 red_gamma, green_gamma, blue_gamma = initial_gamma.split(",")
             reset_command = f"xrandr --output {self.display_name} --gamma {red_gamma}:{green_gamma}:{blue_gamma}"
             subprocess.run(reset_command, shell=True)
