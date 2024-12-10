@@ -1,4 +1,7 @@
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QSlider, QPushButton, QRadioButton, QHBoxLayout
+from PySide6.QtWidgets import (
+    QApplication, QWidget, QVBoxLayout, 
+    QLabel, QSlider, QPushButton, QRadioButton
+)
 from PySide6.QtCore import Qt
 import subprocess
 import sys
@@ -73,7 +76,7 @@ class LUMI(QWidget):
                 red_gamma, green_gamma, blue_gamma = initial_gamma.split(",")
             reset_command = f"xrandr --output {self.display_name} --gamma {red_gamma}:{green_gamma}:{blue_gamma}"
             subprocess.run(reset_command, shell=True)
-            self.label.setText("Reset original gamma")
+            self.label.setText("Original gamma restored.")
             print("Original gamma recovered:", red_gamma, green_gamma, blue_gamma)
         except Exception as e:
             print("Error to recover initial gamma:", e)
